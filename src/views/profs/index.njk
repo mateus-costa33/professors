@@ -1,0 +1,159 @@
+{% extends "layout.njk" %}
+
+{% set title = "Professores" %}
+
+{% block content %}
+    <h4 class="mt-5 text-center">
+    Lista de {{ title }}
+    </h4>
+    <br />
+    <button class="btn btn-outline-success float-right" data-toggle="modal" data-target="#formProfModal" style="margin-bottom:5px;"><span class="material-icons" style="margin-top:5px;">add</span></button>
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Data</th>
+            <th scope="col">Matéria</th>
+            <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for prof in profs %}
+                <tr>
+                    <th>{{ prof.id }}</th>
+                    <td id="name">{{ prof.first_name }} {{ prof.last_name }}</td>
+                    <td id="date">{{ prof.date }}</td>
+                    <td id="materia">{{ prof.disciplina }}</td>
+                    <td>
+                        <span class="food-actions float-left">
+                            <i
+                                class="far fa-trash-alt"
+                                onclick="deleteProfView({{prof.id}}, `{{prof.first_name}}` , `{{prof.last_name}}`)"
+                                data-toggle="modal"
+                                data-target="#deleteFoodModal">
+                            </i>
+                            <i
+                                class="fas fa-pencil-alt"
+                                onclick="loadFormUpdateProf({{ prof.id }}, `{{ prof.first_name }}`, `{{ prof.last_name }}`, `{{ prof.date }}`, `{{ prof.disciplina_id }}`)"
+                                data-toggle="modal"
+                                data-target="#formProfModal">
+                            </i>    
+                        </span>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% include "profs/_form.njk" %}
+{% include "profs/_delete.njk" %}   
+{% endblock content %}
+
+{% block script %}
+    <script>
+
+            const ProfModal = () => {
+                document.querySelector("#formProfLabel").innerHTML = "Novo Professor";
+                document.querySelector("#update-form").style.display = "none";
+
+            }
+
+            ProfModal()
+
+            async function destroy(resource) {
+                    await fetch(`/profs/${resource}`, {
+                        method: 'delete',
+                    });
+                window.location.reload();
+            }
+            async function update(id, data) {
+                 await fetch(`/profs/${id}`, {
+                        method: 'put',
+                        body: JSON.stringify(data),
+                        headers: {
+                        'Content-Type': 'application/json; charset=UTF-8',
+                        },
+                    });
+
+                window.location.href = '/'
+
+            }
+            async function create(data){
+                await fetch(`/profs/create`, {
+                    method: 'post',
+                    body: JSON.stringify(data),
+                    headers: {
+                    'Content-Type': 'application/json; charset=UTF-8',
+                    },
+                })               
+            }
+
+            function deleteProfView(profID, profFirstName, profLastName) {
+                document.querySelector('#modal-name-food').innerHTML = `${profFirstName}  ${profLastName}`;
+
+                document.querySelector('#deleteFoodBtn').onclick = async (e) => {
+                e.preventDefault();
+
+                destroy(profID)
+
+                };
+            }
+
+                        
+
+            document.querySelector('#submit-form').addEventListener("click", async () => {
+                const first_name = document.querySelector("#prof-first-name").value
+                const last_name = document.querySelector("#prof-last-name").value
+                const date = document.querySelector("#prof-data").value
+                const disciplina_id = document.querySelector("#prof-category").value
+
+
+                await create({
+                    first_name,
+                    last_name,
+                    date,
+                    disciplina_id                
+                })
+
+                window.location.href = '/'
+            })
+
+            function loadFormUpdateProf(profID, profFirstName, profLastName, profDate, profDisciplina){
+                document.querySelector("#formProfLabel").innerHTML = "Atualizar Cadastro";
+                document.querySelector("#update-form").style.display = "block";
+                document.querySelector('#submit-form').style.display = "none";
+
+
+                const first_name = document.querySelector("#prof-first-name")
+                const last_name = document.querySelector("#prof-last-name")
+                const date = document.querySelector("#prof-data")
+                const disciplina_id = document.querySelector("#prof-category")
+
+                first_name.value = profFirstName;
+                last_name.value = profLastName;
+                date.value = profDate;
+                disciplina_id.value = profDisciplina;
+
+                document.querySelector('#update-form').addEventListener("click", async () => {
+                    const first_name = document.querySelector("#prof-first-name").value
+                    const last_name = document.querySelector("#prof-last-name").value
+                    const date = document.querySelector("#prof-data").value
+                    const disciplina_id = document.querySelector("#prof-category").value
+
+                  update(profID, {
+                        first_name,
+                        last_name,
+                        date,
+                        disciplina_id
+                    })
+
+                })
+                
+            }
+
+    </script>
+{% endblock %}
+
+
+
+

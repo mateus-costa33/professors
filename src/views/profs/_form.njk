@@ -1,0 +1,41 @@
+<form id="formProf">
+  <div class="modal fade" id="formProfModal" tabindex="-1" aria-labelledby="formFoodLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="formProfLabel"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="prof-name">Primeiro Nome</label>
+            <input type="text" class="form-control" id="prof-first-name" name="first-name">
+          </div> 
+          <div class="form-group">
+            <label for="prof-name">Segundo Nome</label>
+            <input type="text" class="form-control" id="prof-last-name" name="last-name">
+          </div>
+          <div class="form-group">
+            <label for="prof-price">Data</label>
+            <input type="text" class="form-control" id="prof-data" name="data">
+          </div>
+          <div class="form-group">
+            <label for="prof-category">Categoria</label>
+            <select class="form-control" id="prof-category" name="disciplina_id">
+              {% for disciplina in disciplinas %}
+                <option value="{{ disciplina.id }}">{{ disciplina.nome }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+          <button type="button" id="submit-form" class="btn btn-primary">Confirmar</button>
+          <button type="button" id="update-form" class="btn btn-primary">Atualizar</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</form>
