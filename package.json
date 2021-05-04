@@ -5,15 +5,21 @@
   "scripts": {
     "start": "nodemon src/index.js",
     "dev": "node ./src/myfunctions.js",
-    "seeders": "node ./src/seeders.js"
+    "seeders": "node ./src/seeders.js",
+    "db:reload": "npm run db:drop && npm run db:load",
+    "db:load": "npm run db:migration && npm run db:seed",
+    "db:migration": "npm run dev",
+    "db:seed": "npm run seeders",
+    "db:drop": "rm ./src/db/database.sqlite"
   },
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "nunjucks": "^3.2.2",
     "sqlite-async": "^1.1.1",
-    "sqlite3": "^5.0.1"
+    "sqlite3": "^5.0.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"

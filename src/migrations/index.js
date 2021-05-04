@@ -21,6 +21,15 @@ async function up(){
 
         )
     `)
+
+    await db.run(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT,
+      email TEXT UNIQUE,
+      password TEXT
+    )
+  `);
 }
 
 
@@ -30,6 +39,8 @@ async function down() {
     await db.run('DROP TABLE disciplinas');
   
     await db.run('DROP TABLE professores');
+
+    await db.run('DROP TABLE users');
 }
   
 module.exports = { up, down };

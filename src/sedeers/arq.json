@@ -44,6 +44,14 @@
         "id": 7,
         "nome": "Redes de Computadores"
       }
+    ],
+    "users":[
+      {
+        "id": 1,
+        "name": "admin",
+        "email": "admin@email.com",
+        "password": "admin"
+      }
     ]
   }
   

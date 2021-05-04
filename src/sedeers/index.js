@@ -1,5 +1,6 @@
 const Professor = require('../models/Professor');
 const Disciplina = require('../models/Disciplina');
+const Usuario = require('../models/Usuario');
 const fs = require('fs');
 const path = require('path');
 
@@ -13,6 +14,10 @@ function up() {
 
   for (const professor of arq.professores) {
     Professor.create(professor);
+  }
+
+  for (const user of arq.users){
+    Usuario.create(user)
   }
 }
 
