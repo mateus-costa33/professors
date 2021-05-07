@@ -1,8 +1,8 @@
 const fs = require('fs');
 const express = require('express');
 const nunjucks = require('nunjucks');
-const Seed = require('./seeders');
-const Migration = require('./migrations');
+const Seed = require('./seeders/index.js');
+const Migration = require('./migrations/index.js');
 
 const routes = require('./routes');
 
