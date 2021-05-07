@@ -1,6 +1,8 @@
 const fs = require('fs');
 const express = require('express');
 const nunjucks = require('nunjucks');
+const Seed = require('./seeders');
+const Migration = require('./migrations');
 
 const routes = require('./routes');
 
@@ -22,6 +24,13 @@ nunjucks.configure('src/views', {
   autoescape: true,
   noCache: true,
 });
+
+(async () => {
+  if (!fs.existsSync(dbFile)) {
+    await Migration.up();
+    await Seed.up();
+  }
+})();
 
 server.get('/', functions.index)
 server.delete('/profs/:id', functions.destroy)
